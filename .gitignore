@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtualenv
+venv/
+ENV/
+env/
+
+# Configurações sensíveis
+.env
+token_info.txt
+
+# Certificados e chaves
+certs/
+
+# Arquivos de IDE
+.vscode/
+.idea/
