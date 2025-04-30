@@ -15,8 +15,6 @@ env/
 .env
 token_info.txt
 
-# Certificados e chaves
-certs/*
 
 # Arquivos de IDE
 .vscode/
