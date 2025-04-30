@@ -1,7 +1,7 @@
-# WeBot - DCTFWEB-V8
+# WeBot - DCTFWEB
 
 ## 1. Sobre o Projeto
-O **Webot DCTFWEB - V8** é uma ferramenta em Python com interface gráfica (Tkinter) para automação das operações de:
+O **Webot - DCTFWEB** é uma ferramenta em Python com interface gráfica (Tkinter) para automação das operações de:
 - Autenticação na API de Integra Contador do SERPRO (DCTFWEB).
 - Consulta e download de declarações em formato XML.
 - Assinatura digital dos XMLs utilizando certificado PFX/PEM.
@@ -50,7 +50,58 @@ O WeBot requer **certificado** e **chave privada** em formato PEM. Se você inst
 
 ### Estrutura final do diretório `certs/`
     certs/
-    ├── seucertificado.pfx
+    ├── seucertificado.pem
     ├── certificado.pem
     ├── chave_privada.pem
     └── .gitignore          # ou .gitkeep para manter a pasta vazia no Git
+
+## 4. Documentação Adicional
+Se quiser saber mais detalhes sobre a API Integra Contador, consulte a documentação oficial em:  
+https://apicenter.estaleiro.serpro.gov.br/documentacao/api-integra-contador/
+
+
+## 5. Executando o WeBot
+Após configurar o `.env`, siga estes passos:
+
+1. **Preenchimento do layout de exemplo**  
+   - Abra o arquivo `LayoutExemplo.xlsx` (na raiz do projeto).  
+   - Preencha a coluna **CNPJ** com o CNPJ da empresa que deseja processar (14 dígitos, sem formatação).  
+   - Para múltiplas empresas, coloque cada CNPJ em uma linha separada.  
+   - Salve o arquivo.
+
+2. **Preencha os demais campos na GUI**  
+   - **Arquivo Excel**: selecione o `LayoutExemplo.xlsx` preenchido.  
+   - **Pasta de Salvamento**: escolha onde os XMLs e o Excel atualizado serão gerados.  
+   - **Ano PA**: informe o ano de competência (ex: `2025`).  
+   - **Mês PA**: informe o mês de competência (`01` a `12`; só disponível se “Mensal” estiver selecionado).  
+   - **Tipo de Declaração**: escolha entre **Mensal** ou **13º Salário**.
+
+3. **Executar**  
+   - Clique em **Executar**.  
+   - Acompanhe o log na janela para verificar o andamento.  
+   - Ao final, será gerado um arquivo `LayoutExemplo_Atualizado.xlsx` na pasta de saída, contendo os status de cada CNPJ e, se aplicável, as guias de pagamento.
+
+
+## 6. Empacotando com PyInstaller
+Para facilitar o uso por outros colaboradores, gere um executável usando o [PyInstaller](https://pyinstaller.org/):
+
+1. Instale o PyInstaller:
+    
+        pip install pyinstaller
+
+2. Na raiz do projeto, execute (exemplo Windows):
+
+        pyinstaller --onefile --windowed \
+          --add-data "certs;certs" \
+          --add-data ".env;." \
+          Nucleo-DCTFWEB-Entrega&GeraGuiaV8.py
+
+   - `--add-data "certs;certs"`: inclui toda a pasta `certs/` (PFX e PEMs)  
+   - `--add-data ".env;."`: inclui o arquivo de variáveis de ambiente  
+
+3. Após a execução, a pasta `dist/` conterá:
+   - O executável do WeBot  
+   - A pasta `certs/` com seus certificados  
+   - O arquivo `.env`  
+
+4. Compartilhe a pasta `dist/` (ou apenas o executável junto de `certs/` e `.env`) para que outros colaboradores possam rodar sem instalar dependências.
